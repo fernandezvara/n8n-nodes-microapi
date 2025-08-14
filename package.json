@@ -1,0 +1,57 @@
+{
+  "name": "n8n-nodes-microapi",
+  "version": "0.1.0",
+  "description": "n8n node for Micro API - Schema-less JSON storage",
+  "keywords": [
+    "n8n-community-node-package",
+    "microapi",
+    "database",
+    "json",
+    "nosql",
+    "storage"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/fernandezvara/n8n-nodes-microapi",
+  "author": {
+    "name": "Antonio Fernandez Vara",
+    "email": "antoniofernandezvara+microapi@gmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fernandezvara/n8n-nodes-microapi.git"
+  },
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc && cpx \"nodes/MicroApi/microapi.svg\" dist/nodes/MicroApi",
+    "dev": "tsc --watch",
+    "format": "prettier nodes credentials --write",
+    "lint": "eslint nodes credentials --ext .ts",
+    "lintfix": "eslint nodes credentials --ext .ts --fix",
+    "prepublishOnly": "npm run build && npm run lint"
+  },
+  "files": [
+    "dist"
+  ],
+  "n8n": {
+    "n8nNodesApiVersion": 1,
+    "credentials": [
+      "dist/credentials/MicroApiApi.credentials.js"
+    ],
+    "nodes": [
+      "dist/nodes/MicroApi/MicroApi.node.js"
+    ]
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "@typescript-eslint/parser": "^6.19.0",
+    "cpx": "^1.2.1",
+    "eslint": "^8.56.0",
+    "eslint-plugin-n8n-nodes-base": "^1.16.1",
+    "n8n-workflow": "^1.17.0",
+    "prettier": "^3.2.4",
+    "typescript": "^5.3.3"
+  },
+  "peerDependencies": {
+    "n8n-workflow": "^1.25.0"
+  }
+}

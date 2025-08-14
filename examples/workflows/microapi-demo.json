@@ -1,0 +1,116 @@
+{
+  "name": "Example microapi workflow",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -384,
+        -192
+      ],
+      "id": "a8b6ef74-53d6-4412-8d53-7f4da30f4557",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "setName": "n8n",
+        "collectionName": "example",
+        "documentData": "={\n  \"pressed_on\": \"{{ $json.currentDate }}\"\n}",
+        "operation": "create"
+      },
+      "type": "CUSTOM.microApi",
+      "typeVersion": 1,
+      "position": [
+        64,
+        -192
+      ],
+      "id": "9e0970dc-eb3b-462c-8257-8892a949a365",
+      "name": "Create document",
+      "credentials": {}
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dateTime",
+      "typeVersion": 2,
+      "position": [
+        -176,
+        -192
+      ],
+      "id": "7382e242-50af-4ff9-8b26-7f5d16324376",
+      "name": "Date & Time"
+    },
+    {
+      "parameters": {
+        "operation": "query",
+        "setName": "n8n",
+        "collectionName": "example",
+        "where": ""
+      },
+      "type": "CUSTOM.microApi",
+      "typeVersion": 1,
+      "position": [
+        256,
+        -192
+      ],
+      "id": "c47d936d-684a-4d05-8166-faac8d029719",
+      "name": "Query documents",
+      "alwaysOutputData": true,
+      "credentials": {}
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Date & Time",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Date & Time": {
+      "main": [
+        [
+          {
+            "node": "Create document",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create document": {
+      "main": [
+        [
+          {
+            "node": "Query documents",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Query documents": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "d96c0ac1-53d7-4439-9dbb-8ec6e55f805c",
+  "meta": {
+    "templateCredsSetupCompleted": false,
+    "instanceId": "5e0d521c192760a11965ec31bcc353d9c523e869dbb7acfdffc55b0cfcdc861e"
+  },
+  "id": "0U5lNS1N26QP0L7X",
+  "tags": []
+}
