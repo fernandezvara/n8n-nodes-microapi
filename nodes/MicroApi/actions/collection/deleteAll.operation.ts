@@ -1,4 +1,4 @@
-import type { IExecuteFunctions, INodeExecutionData, INodeProperties } from 'n8n-workflow';
+import type { IExecuteFunctions, INodeExecutionData, INodeProperties, IDataObject } from 'n8n-workflow';
 import { apiRequest } from '../../transport';
 
 export const description: INodeProperties[] = [
@@ -48,9 +48,9 @@ export const description: INodeProperties[] = [
 export async function execute(this: IExecuteFunctions, index: number): Promise<INodeExecutionData[]> {
   const setName = this.getNodeParameter('setName', index) as string;
   const collectionName = this.getNodeParameter('collectionName', index) as string;
-  const where = this.getNodeParameter('where', index) as any;
+  const where = this.getNodeParameter('where', index) as IDataObject;
 
-  const qs: Record<string, any> = {};
+  const qs: IDataObject = {};
   if (where && Object.keys(where).length) qs.where = JSON.stringify(where);
 
   const response = await apiRequest.call(
@@ -61,6 +61,10 @@ export async function execute(this: IExecuteFunctions, index: number): Promise<I
     qs,
   );
 
-  const data = response?.data ?? response;
-  return [{ json: data }];
+  const data = (response as IDataObject)?.data ?? response;
+  const json: IDataObject =
+    data !== null && typeof data === 'object' && !Array.isArray(data)
+      ? (data as IDataObject)
+      : { data };
+  return [{ json }];
 }

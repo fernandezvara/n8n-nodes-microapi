@@ -1,4 +1,4 @@
-import type { IExecuteFunctions, INodeExecutionData, INodeProperties } from 'n8n-workflow';
+import type { IDataObject, IExecuteFunctions, INodeExecutionData, INodeProperties } from 'n8n-workflow';
 import { apiRequest } from '../../transport';
 
 export const description: INodeProperties[] = [
@@ -73,7 +73,7 @@ export const description: INodeProperties[] = [
     type: 'number',
     typeOptions: { minValue: 1 },
     default: 50,
-    description: 'Maximum number of results to return',
+    description: 'Max number of results to return',
     displayOptions: {
       show: {
         resource: ['document'],
@@ -105,7 +105,7 @@ export async function execute(this: IExecuteFunctions, index: number): Promise<I
   const limit = this.getNodeParameter('limit', index) as number;
   const offset = this.getNodeParameter('offset', index) as number;
 
-  const qs: Record<string, any> = {};
+  const qs: IDataObject = {};
   // Accept both object value and JSON string; only send when non-empty object
   let whereObj: unknown = undefined;
   if (typeof whereParam === 'string') {

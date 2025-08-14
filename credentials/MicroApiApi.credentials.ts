@@ -3,6 +3,7 @@ import { ICredentialType, INodeProperties } from 'n8n-workflow';
 export class MicroApiApi implements ICredentialType {
   name = 'microApiApi';
   displayName = 'Micro API';
+  // eslint-disable-next-line n8n-nodes-base/cred-class-field-documentation-url-miscased
   documentationUrl = 'https://github.com/fernandezvara/microapi';
 
   properties: INodeProperties[] = [

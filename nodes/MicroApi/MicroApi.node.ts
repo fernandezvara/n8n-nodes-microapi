@@ -1,4 +1,4 @@
-import type { IExecuteFunctions, INodeExecutionData, INodeType, INodeTypeDescription } from 'n8n-workflow';
+import type { IDataObject, IExecuteFunctions, INodeExecutionData, INodeType, INodeTypeDescription } from 'n8n-workflow';
 import { NodeConnectionType } from 'n8n-workflow';
 import { NodeOperationError } from 'n8n-workflow';
 
@@ -56,7 +56,7 @@ export class MicroApi implements INodeType {
 
     for (let i = 0; i < items.length; i++) {
       try {
-        let responseData: any;
+        let responseData: unknown;
 
         if (resource === 'document') {
           responseData = await document.execute.call(this, i);
@@ -68,10 +68,13 @@ export class MicroApi implements INodeType {
           throw new NodeOperationError(this.getNode(), `Resource "${resource}" is not supported yet.`, { itemIndex: i });
         }
 
+        const normalize = (d: unknown): IDataObject =>
+          d !== null && typeof d === 'object' && !Array.isArray(d) ? (d as IDataObject) : { data: d as never };
+
         if (Array.isArray(responseData)) {
-          returnData.push(...responseData.map((d) => ({ json: d })));
+          returnData.push(...responseData.map((d) => ({ json: normalize(d) })));
         } else if (responseData !== undefined) {
-          returnData.push({ json: responseData });
+          returnData.push({ json: normalize(responseData) });
         } else {
           returnData.push({ json: { success: true } });
         }

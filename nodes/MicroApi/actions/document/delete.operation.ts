@@ -1,4 +1,4 @@
-import type { IExecuteFunctions, INodeExecutionData, INodeProperties } from 'n8n-workflow';
+import type { IDataObject, IExecuteFunctions, INodeExecutionData, INodeProperties } from 'n8n-workflow';
 import { apiRequest } from '../../transport';
 
 export const description: INodeProperties[] = [
@@ -68,6 +68,11 @@ export async function execute(this: IExecuteFunctions, index: number): Promise<I
     `/${encodeURIComponent(setName)}/${encodeURIComponent(collectionName)}/${encodeURIComponent(id)}`,
   );
 
-  const data = response?.data ?? response;
-  return [{ json: data ?? { success: true } }];
+  const data = (response as IDataObject)?.data ?? response;
+  const payload = data ?? { success: true };
+  const json: IDataObject =
+    payload !== null && typeof payload === 'object' && !Array.isArray(payload)
+      ? (payload as IDataObject)
+      : { data: payload };
+  return [{ json }];
 }

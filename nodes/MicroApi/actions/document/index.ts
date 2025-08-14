@@ -24,10 +24,10 @@ export const descriptions: INodeProperties[] = [
         action: 'Create document',
       },
       {
-        name: 'Query',
-        value: 'query',
-        description: 'Query documents in a collection',
-        action: 'Query documents',
+        name: 'Delete',
+        value: 'delete',
+        description: 'Delete a document by ID',
+        action: 'Delete document',
       },
       {
         name: 'Get',
@@ -36,16 +36,16 @@ export const descriptions: INodeProperties[] = [
         action: 'Get document',
       },
       {
+        name: 'Query',
+        value: 'query',
+        description: 'Query documents in a collection',
+        action: 'Query documents',
+      },
+      {
         name: 'Update',
         value: 'update',
         description: 'Update a document (PUT/PATCH)',
         action: 'Update document',
-      },
-      {
-        name: 'Delete',
-        value: 'delete',
-        description: 'Delete a document by ID',
-        action: 'Delete document',
       },
     ],
     default: 'create',

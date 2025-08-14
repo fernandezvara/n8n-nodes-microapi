@@ -1,12 +1,12 @@
-import type { IExecuteFunctions, IHttpRequestMethods, IHttpRequestOptions } from 'n8n-workflow';
+import type { IExecuteFunctions, IHttpRequestMethods, IHttpRequestOptions, IDataObject } from 'n8n-workflow';
 
 export async function apiRequest(
   this: IExecuteFunctions,
   method: string,
   path: string,
   body?: unknown,
-  qs?: Record<string, any>,
-): Promise<any> {
+  qs?: IDataObject,
+): Promise<IDataObject> {
   const credentials = await this.getCredentials('microApiApi');
   const base = (credentials.apiUrl as string).replace(/\/$/, '');
   const urlPath = path.startsWith('/') ? path : `/${path}`;
