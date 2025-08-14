@@ -100,13 +100,33 @@ export const description: INodeProperties[] = [
 export async function execute(this: IExecuteFunctions, index: number): Promise<INodeExecutionData[]> {
   const setName = this.getNodeParameter('setName', index) as string;
   const collectionName = this.getNodeParameter('collectionName', index) as string;
-  const where = this.getNodeParameter('where', index) as any;
+  const whereParam = this.getNodeParameter('where', index) as unknown;
   const orderBy = this.getNodeParameter('orderBy', index) as string;
   const limit = this.getNodeParameter('limit', index) as number;
   const offset = this.getNodeParameter('offset', index) as number;
 
   const qs: Record<string, any> = {};
-  if (where && Object.keys(where).length) qs.where = JSON.stringify(where);
+  // Accept both object value and JSON string; only send when non-empty object
+  let whereObj: unknown = undefined;
+  if (typeof whereParam === 'string') {
+    const trimmed = whereParam.trim();
+    if (trimmed) {
+      try {
+        whereObj = JSON.parse(trimmed);
+      } catch {
+        // Not valid JSON; do not send `where`
+      }
+    }
+  } else if (whereParam && typeof whereParam === 'object') {
+    whereObj = whereParam;
+  }
+
+  const isPlainObject = (v: unknown): v is Record<string, unknown> =>
+    typeof v === 'object' && v !== null && !Array.isArray(v);
+
+  if (isPlainObject(whereObj) && Object.keys(whereObj).length > 0) {
+    qs.where = JSON.stringify(whereObj);
+  }
   if (orderBy) qs.order_by = orderBy;
   if (typeof limit === 'number') qs.limit = limit;
   if (typeof offset === 'number') qs.offset = offset;
