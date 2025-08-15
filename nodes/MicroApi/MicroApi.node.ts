@@ -1,5 +1,5 @@
 import type { IDataObject, IExecuteFunctions, INodeExecutionData, INodeType, INodeTypeDescription } from 'n8n-workflow';
-import { NodeConnectionType } from 'n8n-workflow';
+
 import { NodeOperationError } from 'n8n-workflow';
 
 import * as document from './actions/document';
@@ -18,8 +18,8 @@ export class MicroApi implements INodeType {
     defaults: {
       name: 'Micro API',
     },
-    inputs: [NodeConnectionType.Main],
-    outputs: [NodeConnectionType.Main],
+    inputs: ['main'] as unknown as INodeTypeDescription['inputs'],
+    outputs: ['main'] as unknown as INodeTypeDescription['outputs'],
     credentials: [
       {
         name: 'microApiApi',
